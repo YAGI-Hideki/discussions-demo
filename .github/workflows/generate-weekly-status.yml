@@ -1,0 +1,23 @@
+name: Create Weekly Status Report
+
+on:
+  workflow_dispatch
+  # Use the following cron job to generate a weekly status report. Workflow will run every Tuesday at 5:30PM UTC (11:30am CT)
+  # schedule:
+    # - cron: '30 17 * * 2'
+  
+jobs:
+  create-weekly-sync-issue:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        repository: ${{ github.repository }}
+        fetch-depth: 1
+    # Create issue from template
+    - uses: lowply/issue-from-template@v0.1.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        IFT_TEMPLATE_NAME: "weekly-status-report-template.md"
